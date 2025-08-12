@@ -1,0 +1,41 @@
+import type React from "react"
+import type { Metadata } from "next"
+import { GeistSans } from "geist/font/sans"
+import { GeistMono } from "geist/font/mono"
+import "./globals.css"
+import { AuthProvider } from "@/contexts/auth-context"
+// Added NavigationGuard for enhanced role-based navigation
+import { NavigationGuard } from "@/components/auth/navigation-guard"
+import { Toaster } from "@/components/ui/toaster"
+
+export const metadata: Metadata = {
+  title: "Lecture Reminder App",
+  description: "Stay on top of your lectures with smart reminders",
+  generator: "v0.dev",
+}
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <html lang="en">
+      <head>
+        <style>{`
+html {
+  font-family: ${GeistSans.style.fontFamily};
+  --font-sans: ${GeistSans.variable};
+  --font-mono: ${GeistMono.variable};
+}
+        `}</style>
+      </head>
+      <body>
+        <AuthProvider>
+          <NavigationGuard>{children}</NavigationGuard>
+          <Toaster />
+        </AuthProvider>
+      </body>
+    </html>
+  )
+}
